@@ -1,54 +1,25 @@
-#define MODE_HELLO_WORLD    (1)
-#define MODE_HELLO_KM       (2)
-#define MODE_HELLO_RIKITO   (3)
+#define WAIT_TIME           (200)
 
-#define WAIT_TIME           (20) // [ms]
+void setup() {
+  Serial.begin(115200);
+  }
 
+  void loop() {
+  for(int t = 1;t < 101; t++) {
+    Serial.print(t);
 
-int g_display_mode;
-int g_count = 0;
-
-void setup() 
-{
-	Serial.begin(115200);
-	
-	g_display_mode = MODE_HELLO_WORLD;
-}
-
-void loop() 
-{
-	if(Serial.available() > 0) {
-        // read character from serial port
-		int getstr = Serial.read();
-		if(getstr == 'w') {
-            g_display_mode = MODE_HELLO_WORLD;
-        }
-		else if(getstr == 'k') {
-            g_display_mode = MODE_HELLO_KM;
-        }
-    else if(getstr != 'r') {
-            g_display_mode = MODE_HELLO_RIKITO;
-        }
+    if (t % 3 == 0 && t % 5 == 0) {
+      Serial.println(":FizzBuzz");
+    } else if(t % 3 == 0) {
+      Serial.println(":Buzz");
+    } else if(t % 5 == 0) {
+      Serial.println(":Fizz");
+    } else if(t==100) {
+        break;
+    } else {
+      Serial.println(":");
     }
-
-	if(g_count > 50) {
-        g_count = 0;
-		int time = millis(); // get time
-    	if(g_display_mode == MODE_HELLO_WORLD) {
-        	Serial.print("Hello World "); // output string (and line feed)
-        }
-        else if(g_display_mode == MODE_HELLO_KM) {
-        	Serial.print("Hello KM "); // output string (and line feed)
-        }
-        else if(g_display_mode == MODE_HELLO_RIKITO) {
-        	Serial.print("Hello Rikito "); // output string (and line feed)
-        }
-        // display time
-        char txt[128];
-        sprintf(txt, "%d [msec]\n", time);
-        Serial.print(txt);
-    }
-
-	g_count ++;
     delay(WAIT_TIME);
+  }
+  while(1);
 }
